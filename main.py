@@ -15,9 +15,9 @@ if __name__ == "__main__":
     csvfile_dir = os.path.join(root_dir, "output.csv")
     img_dir = os.path.join(root_dir, "output")
 
-    csvfile = open(csvfile_dir,"w")
+    csvfile = open(csvfile_dir,"a")
     writer = csv.writer(csvfile)
-    writer.writerow(["timestamp", "cam temp", "pixel(9)", "temp(9)"])
+    writer.writerow(["timestamp", "cam temp", "pixel0","pixel1","pixel2","pixel3","pixel4","pixel5","pixel6","pixel7","pixel8","temp0","temp1","temp2","temp3","temp4","temp5","temp6","temp7","temp8"])
 
     therm = Thermistor()
 
@@ -31,19 +31,23 @@ if __name__ == "__main__":
         print("can't open camera")
         exit()
 
-
+    stable_time = 1500
     idx = 0
+    csvfile.close()
+    
     while True:
-        if idx <1500:
-            idx += 1
-            continue
-        elif idx == 1581:
-            break
-        
+        csvfile = open(csvfile_dir,"a")
+        writer = csv.writer(csvfile)
         now = datetime.now()#.strftime('%H%M%S')
         ret, frame = cap.read()
         if not ret:
             print("can't read frame")
+            break
+
+        if idx <stable_time:
+            idx += 1
+            continue
+        elif idx == (stable_time + 108000):
             break
 
         therm_out = therm.read()
@@ -57,14 +61,15 @@ if __name__ == "__main__":
 
 
         filename_out = os.path.join(img_dir, f"{now.strftime('%y%m%d_%H:%M:%S')}.jpg")
-        frame = cv2.applyColorMap(frame, cv2.COLORMAP_JET)
+        # frame = cv2.applyColorMap(frame, cv2.COLORMAP_JET)
         cv2.imwrite(filename_out, frame)
 
         if cv2.waitKey(1) == 27:  # ESC
             break
-        time.sleep(60) # 1분
+
+        csvfile.close()
+
+        time.sleep(10) # 1분
         idx += 1
 
-
-    csvfile.close()
     cap.release()   

@@ -44,7 +44,7 @@ def draw_symmetric_grid_points(frame, spacing_x=220, spacing_y=170):
         for dx in offset_x:
             cx = center_x + dx
             cy = center_y + dy
-            cv2.circle(frame, (cx, cy), radius=8, color=(0, 0, 0), thickness=-1)
+            cv2.circle(frame, (cx, cy), radius=8, color=(255, 255, 255), thickness=-1)
             cv2.putText(frame, str(idx), (cx + 10, cy - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
             measure_points.append((cx, cy))

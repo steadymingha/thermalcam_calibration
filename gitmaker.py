@@ -1,8 +1,8 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
 
-input_dir = "output"
-output_gif = "time_annotated.gif"
+input_dir = "/home/user/ws/temp_cam/output"
+output_gif = input_dir+"/time_annotated.gif"
 duration_per_frame = 100  # 1초
 
 # 모든 .jpg 파일 정렬
